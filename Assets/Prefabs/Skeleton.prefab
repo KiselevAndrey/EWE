@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458342375994603896}
   m_LocalRotation: {x: 0.9988956, y: 0.000000006621828, z: -0.00000014077324, w: -0.046986293}
-  m_LocalPosition: {x: -0, y: -0.0017764299, z: -0.0025389185}
+  m_LocalPosition: {x: -0, y: -0.0017764299, z: -0.002538919}
   m_LocalScale: {x: 1, y: 0.99999994, z: 0.99998426}
   m_Children:
   - {fileID: 1458342377049861351}
@@ -146,7 +146,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458342376073868356}
   m_LocalRotation: {x: 0.5, y: 0.49999994, z: 0.5, w: 0.50000006}
-  m_LocalPosition: {x: -0, y: 0, z: 0.0018687123}
+  m_LocalPosition: {x: 0, y: 0, z: 0.0018687123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1458342376838005318}
@@ -720,6 +720,7 @@ MonoBehaviour:
   moveSpeed: 10
   rotateSpeed: 100
   characterController: {fileID: 1458342376863813224}
+  animator: {fileID: 1458342376863813227}
   jumpHeight: 2
   graviScale: 1
 --- !u!95 &1458342376863813227
@@ -758,7 +759,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.4, z: 0}
+  m_Center: {x: 0, y: 1.3, z: 0}
 --- !u!114 &1458342376863813228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,7 +1221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1458342377822150646}
   m_LocalRotation: {x: -0.047704298, y: 0.69491804, z: -0.05839557, w: 0.7151246}
-  m_LocalPosition: {x: -1.4887868e-13, y: 0.0038973242, z: 4.4700213e-10}
+  m_LocalPosition: {x: -1.4887868e-13, y: 0.003897324, z: 4.4700213e-10}
   m_LocalScale: {x: 1.0000001, y: 1.0000001, z: 1}
   m_Children:
   - {fileID: 1458342376192638478}

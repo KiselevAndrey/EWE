@@ -10,6 +10,7 @@ public class Moving : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private Animator animator;
 
     [Header("Gravity")]
     [SerializeField] private float jumpHeight;
@@ -33,6 +34,10 @@ public class Moving : MonoBehaviour
     {
         float inputH = Input.GetAxis("Horizontal");
         float inputV = Input.GetAxis("Vertical");
+
+        animator.SetFloat("HorizontalMove", inputH);
+        animator.SetFloat("VerticalMove", inputV);
+        animator.SetBool("Moving", inputH != 0 || inputV != 0);
 
         Vector3 moveDirection = transform.forward * inputV + transform.right * inputH;
         if (moveDirection.magnitude > 1) moveDirection.Normalize();

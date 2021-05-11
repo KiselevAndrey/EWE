@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Moving : MonoBehaviour
+public class PlayerManager : MonoBehaviour
 {
     [Header("Movement config")]
     [SerializeField] private float moveSpeed = 10f;
@@ -16,8 +14,22 @@ public class Moving : MonoBehaviour
     [SerializeField] private float jumpHeight;
     [SerializeField] private float graviScale;
 
-    private float gravity;
-    private bool jumping;
+    private float _gravity;
+    private bool _jumping;
+    private bool _gameOver;
+
+    #region Awake OnDestroy Start Update
+    private void Awake()
+    {
+        Exit.Finish += GameOver;
+        Savior.RestartLvl += GameOver;
+    }
+
+    private void OnDestroy()
+    {
+        Exit.Finish -= GameOver;
+        Savior.RestartLvl -= GameOver;
+    }
 
     private void Start()
     {
@@ -26,10 +38,14 @@ public class Moving : MonoBehaviour
 
     private void Update()
     {
+        if (_gameOver) return;
+
         Move();
         Rotate();
     }
+    #endregion
 
+    #region Move Rotate
     private void Move()
     {
         float inputH = Input.GetAxis("Horizontal");
@@ -44,15 +60,15 @@ public class Moving : MonoBehaviour
 
         if (characterController.isGrounded)
         {
-            jumping = Input.GetButton("Jump");
-            gravity = jumping ? jumpHeight : 0;
+            _jumping = Input.GetButton("Jump");
+            _gravity = _jumping ? jumpHeight : 0;
         }
         else
         {
-            if (characterController.velocity.y == 0 && jumping) gravity = -0.01f;
-            else gravity += graviScale * Physics.gravity.y * Time.deltaTime;
+            if (characterController.velocity.y == 0 && _jumping) _gravity = -0.01f;
+            else _gravity += graviScale * Physics.gravity.y * Time.deltaTime;
         }
-        moveDirection.y = gravity;
+        moveDirection.y = _gravity;
 
         characterController.Move(moveDirection * Time.deltaTime * moveSpeed);
         
@@ -64,6 +80,25 @@ public class Moving : MonoBehaviour
         transform.Rotate(Vector3.up, mouseHorizontal * rotateSpeed * Time.deltaTime);
         Cursor.lockState = CursorLockMode.Locked;
     }
+    #endregion
 
+    #region GameOver
+    public void GameOver(bool win)
+    {
+        PauseGame(true);
+        if (!win) Dead();
+    }
 
+    public void Dead()
+    {
+        print("i'm dead");
+    }
+
+    private void PauseGame(bool isPause)
+    {
+        _gameOver = isPause;
+        Cursor.visible = isPause;
+        Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+    #endregion
 }

@@ -1,17 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    private enum Direction { Up, Down, Left, Right, Forward, Back }
-
     [Header("Parametrs")]
-    [SerializeField] private Direction openDirection;
     [SerializeField] private bool imClosed;
     [SerializeField] private float openDistance;
-    [SerializeField] private float openSeconds;
-    [SerializeField] private float closeSeconds;
+    [SerializeField] private float openSpeed;
+    [SerializeField] private float closeSpeed;
 
     [Header("Reference")]
     [SerializeField] private MeshRenderer meshRenderer;
@@ -20,108 +16,60 @@ public class Door : MonoBehaviour
     [SerializeField] private Material closeMaterial;
     [SerializeField] private Material openMaterial;
 
-    private int _countIteration;
+    private Vector3 _openPosition;
     private Vector3 _closePosition;
 
     private void Start()
     {
         meshRenderer.material = imClosed ? closeMaterial : openMaterial;
-        _closePosition = imClosed ? transform.position : NewPosition(GetDirection(openDirection, im)
+        _openPosition = imClosed ? NewPosition(-openDistance) : transform.position;
+        _closePosition = imClosed ? transform.position : NewPosition(openDistance);
     }
 
+    #region Open Close
     public void ChangeStatus()
     {
         imClosed = !imClosed;
-        StartCoroutine(Moving());
+        StartCoroutine(imClosed? Closing() : Opening());
     }
 
     public void Open()
     {
         imClosed = false;
+        StartCoroutine(Opening());
     }
 
     public void Close()
     {
         imClosed = true;
+        StartCoroutine(Closing());
     }
-
-    private IEnumerator Moving()
-    {
-        yield return new WaitForSeconds(Time.deltaTime);
-    }
+    #endregion
 
     #region Helping Func
-    private Vector3 NewPosition(Direction direction, float speed)
-    {
-        Vector3 temp = transform.position;
+    private Vector3 NewPosition(float speed) => transform.position + transform.up * speed;
 
-        switch (direction)
+    private IEnumerator Opening()
+    {
+        float minDistance = openDistance * 1.5f;
+
+        while (Vector3.Distance(transform.position, _openPosition) <= minDistance && !imClosed)
         {
-            case Direction.Up:
-                temp.y += speed;
-                break;
-
-            case Direction.Down:
-                temp.y -= speed;
-                break;
-
-            case Direction.Left:
-                temp.x -= speed;
-                break;
-
-            case Direction.Right:
-                temp.x += speed;
-                break;
-
-            case Direction.Forward:
-                temp.z += speed;
-                break;
-
-            case Direction.Back:
-                temp.z -= speed;
-                break;
-        }
-
-        return temp;
-    }
-
-    private Direction GetDirection()
-    {
-        return GetDirection(openDirection, !imClosed);
-    }
-
-    private Direction GetDirection(Direction direction, bool trueDirection)
-    {
-        if (trueDirection) return direction;
-
-        switch (direction)
-        {
-            case Direction.Up:
-                return Direction.Down;
-
-            case Direction.Down:
-                return Direction.Up;
-
-            case Direction.Left:
-                return Direction.Right;
-
-            case Direction.Right:
-                return Direction.Left;
-
-            case Direction.Forward:
-                return Direction.Back;
-
-            case Direction.Back:
-                return Direction.Forward;
-
-            default:
-                return direction;
+            minDistance = Vector3.Distance(transform.position, _openPosition);
+            transform.position -= transform.up * openSpeed * Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
         }
     }
 
-    private float GetSpeed(float speedModifier)
+    private IEnumerator Closing()
     {
-        return (imClosed ? closeSeconds : openSeconds) * speedModifier;
+        float minDistance = openDistance * 1.5f;
+        while (Vector3.Distance(transform.position, _closePosition) <= minDistance && imClosed)
+        {
+            minDistance = Vector3.Distance(transform.position, _closePosition);
+            transform.position += transform.up * closeSpeed * Time.deltaTime;
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
     #endregion
 }

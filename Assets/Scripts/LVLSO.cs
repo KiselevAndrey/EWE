@@ -5,6 +5,7 @@ using UnityEngine;
 public class LVLSO : ScriptableObject
 {
     public int currentLVL;
+    public int maxLVL;
 
     public List<GameObject> LVLObjects;
 

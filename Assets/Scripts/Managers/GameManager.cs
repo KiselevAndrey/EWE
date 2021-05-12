@@ -60,6 +60,10 @@ public class GameManager : MonoBehaviour
     public void NextLVL()
     {
         lvlSO.currentLVL++;
+
+        lvlSO.CheckMaxLVL();
+        SaveSystem.SaveLVLSO(lvlSO);
+
         if (lvlSO.HaveCurentLVL())
             ReloadScene();
         else GoHome();

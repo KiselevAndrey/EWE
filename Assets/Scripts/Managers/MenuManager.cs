@@ -21,10 +21,11 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        SaveSystem.LoadLVLSO().LoadData(ref lvlSO);
+        Load();
     }
     #endregion
 
+    #region For Buttons
     public void CreateLVLsButton()
     {
         for (int i = 0; i < lvlSO.LVLObjects.Count; i++)
@@ -44,4 +45,12 @@ public class MenuManager : MonoBehaviour
 
         SceneManager.LoadScene(1);
     }
+    #endregion
+
+    #region Load
+    private void Load()
+    {
+        SaveSystem.LoadLVLSO().LoadData(ref lvlSO);
+    }
+    #endregion
 }

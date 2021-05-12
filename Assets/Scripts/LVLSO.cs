@@ -16,4 +16,13 @@ public class LVLSO : ScriptableObject
     }
 
     public bool HaveCurentLVL() => LVLObjects.Count > currentLVL;
+
+    public void CheckMaxLVL(int lvl)
+    {
+        lvl = Mathf.Min(lvl, LVLObjects.Count - 1);
+
+        maxLVL = Mathf.Max(maxLVL, lvl);
+    }
+
+    public void CheckMaxLVL() => CheckMaxLVL(currentLVL);
 }

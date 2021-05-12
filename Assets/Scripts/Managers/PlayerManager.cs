@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -9,10 +10,15 @@ public class PlayerManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private CharacterController characterController;
     [SerializeField] private Animator animator;
+    [SerializeField] private Death death;
 
     [Header("Gravity")]
     [SerializeField] private float jumpHeight;
     [SerializeField] private float graviScale;
+
+    [Header("Game Over Camera Position")]
+    [SerializeField] private Transform losePosition;
+    [SerializeField] private Transform winPosition;
 
     private float _gravity;
     private bool _jumping;
@@ -86,19 +92,34 @@ public class PlayerManager : MonoBehaviour
     public void GameOver(bool win)
     {
         PauseGame(true);
-        if (!win) Dead();
+        if (!win) Dead(true);
     }
 
-    public void Dead()
+    public void Dead(bool changeCameraPosition)
     {
-        print("i'm dead");
+        death.Die(characterController.velocity);
+        if (changeCameraPosition) StartCoroutine(ChangeCameraPosition(losePosition));
     }
 
     private void PauseGame(bool isPause)
     {
+        animator.SetBool("Moving", false);
         _gameOver = isPause;
         Cursor.visible = isPause;
         Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+
+    private IEnumerator ChangeCameraPosition(Transform transform)
+    {
+        while (Vector3.Distance(Camera.main.transform.position, transform.position)> 0.1f || Camera.main.transform.up != transform.up)
+        {
+            Camera.main.transform.position = Vector3.MoveTowards(Camera.main.transform.position, transform.position, Time.deltaTime);
+            Vector3 direction = transform.position - Camera.main.transform.position;
+            Quaternion rotation = Quaternion.Euler(direction);
+            Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, rotation, 5f * Time.deltaTime);
+
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
     }
     #endregion
 }

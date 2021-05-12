@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject NextLVLButton;
     [SerializeField] private GameObject RestartButton;
 
+    [Header("Reference")]
+    [SerializeField] private LVLSO lvlSO;
 
     #region Awake OnDestroy Start
     private void Awake()
@@ -28,9 +29,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         gameOver.SetActive(false);
+        Instantiate(lvlSO.GetCurrentLVL());
     }
     #endregion
 
+    #region End Game
     public void EndGame(bool win)
     {
         gameOver.SetActive(true);
@@ -39,4 +42,27 @@ public class GameManager : MonoBehaviour
 
         gameOverText.text = "Game Over\n\nYou " + (win ? "win" : "lose"); 
     }
+    #endregion
+
+    #region SceneManager
+    public void LoadScene(int indexScene)
+    {
+        SceneManager.LoadScene(indexScene);
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void GoHome() => LoadScene(0);
+
+    public void NextLVL()
+    {
+        lvlSO.currentLVL++;
+        if (lvlSO.HaveCurentLVL())
+            ReloadScene();
+        else GoHome();
+    }
+    #endregion
 }

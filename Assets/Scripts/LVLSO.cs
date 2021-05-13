@@ -19,7 +19,7 @@ public class LVLSO : ScriptableObject
 
     public void CheckMaxLVL(int lvl)
     {
-        lvl = Mathf.Min(lvl, LVLObjects.Count - 1);
+        lvl = Mathf.Min(lvl, LVLObjects.Count);
 
         maxLVL = Mathf.Max(maxLVL, lvl);
     }

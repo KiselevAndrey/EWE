@@ -1,9 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static Action<bool> GameOver;
+
     [Header("UI")]
     [SerializeField] private GameObject gameOver;
     [SerializeField] private Text gameOverText;
@@ -13,17 +17,21 @@ public class GameManager : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private LVLSO lvlSO;
 
+    private bool _gameOver;
+
     #region Awake OnDestroy Start
     private void Awake()
     {
         Exit.Finish += EndGame;
         Savior.RestartLvl += EndGame;
+        Trap.ImCatch += EndGame;
     }
 
     private void OnDestroy()
     {
         Exit.Finish -= EndGame;
         Savior.RestartLvl -= EndGame;
+        Trap.ImCatch -= EndGame;
     }
 
     private void Start()
@@ -36,11 +44,30 @@ public class GameManager : MonoBehaviour
     #region End Game
     public void EndGame(bool win)
     {
-        gameOver.SetActive(true);
+        GameOver(win);
+
+        if (_gameOver) return;
+        _gameOver = true;
+
+        StartCoroutine(ShowMenu());
         NextLVLButton.SetActive(win);
         RestartButton.SetActive(!win);
 
-        gameOverText.text = "Game Over\n\nYou " + (win ? "win" : "lose"); 
+        gameOverText.text = "Game Over\n\nYou " + (win ? "win" : "lose");
+
+        if (win)
+        {
+            lvlSO.currentLVL++;
+            lvlSO.CheckMaxLVL();
+            SaveSystem.SaveLVLSO(lvlSO);
+        }
+    }
+
+    private IEnumerator ShowMenu()
+    {
+        yield return new WaitForSeconds(2f);
+
+        gameOver.SetActive(true);
     }
     #endregion
 
@@ -59,11 +86,6 @@ public class GameManager : MonoBehaviour
 
     public void NextLVL()
     {
-        lvlSO.currentLVL++;
-
-        lvlSO.CheckMaxLVL();
-        SaveSystem.SaveLVLSO(lvlSO);
-
         if (lvlSO.HaveCurentLVL())
             ReloadScene();
         else GoHome();

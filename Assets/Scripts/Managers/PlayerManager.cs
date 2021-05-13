@@ -27,19 +27,18 @@ public class PlayerManager : MonoBehaviour
     #region Awake OnDestroy Start Update
     private void Awake()
     {
-        Exit.Finish += GameOver;
-        Savior.RestartLvl += GameOver;
+        GameManager.GameOver += GameOver;
     }
 
     private void OnDestroy()
     {
-        Exit.Finish -= GameOver;
-        Savior.RestartLvl -= GameOver;
+        GameManager.GameOver -= GameOver;
     }
 
     private void Start()
     {
         Cursor.visible = false;
+        animator.SetTrigger("Born");
     }
 
     private void Update()
@@ -92,13 +91,18 @@ public class PlayerManager : MonoBehaviour
     public void GameOver(bool win)
     {
         PauseGame(true);
-        if (!win) Dead(true);
+        if (win) ToBeHappy();
+        else Dead();
     }
 
-    public void Dead(bool changeCameraPosition)
+    private void Dead()
     {
         death.Die(characterController.velocity);
-        if (changeCameraPosition) StartCoroutine(ChangeCameraPosition(losePosition));
+    }
+
+    private void ToBeHappy()
+    {
+        animator.SetTrigger("Happy");
     }
 
     private void PauseGame(bool isPause)
@@ -108,6 +112,9 @@ public class PlayerManager : MonoBehaviour
         Cursor.visible = isPause;
         Cursor.lockState = isPause ? CursorLockMode.None : CursorLockMode.Locked;
     }
+
+    public void DontMove() => _gameOver = true;
+    public void CanMove() => _gameOver = false;
 
     private IEnumerator ChangeCameraPosition(Transform transform)
     {

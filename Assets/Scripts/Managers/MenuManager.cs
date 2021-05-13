@@ -28,9 +28,17 @@ public class MenuManager : MonoBehaviour
     #region For Buttons
     public void CreateLVLsButton()
     {
-        for (int i = 0; i < lvlSO.LVLObjects.Count; i++)
+        for (int i = 0; i < lvlSO.maxLVL; i++)
         {
             Instantiate(buttonPrefab, scrollContent).GetComponent<SelectLVLBtn>().SetLVL(i + 1);
+        }
+    }
+
+    public void DelLVLsButton()
+    {
+        foreach (var child in scrollContent.GetComponentsInChildren<SelectLVLBtn>())
+        {
+            Destroy(child.gameObject);
         }
     }
 

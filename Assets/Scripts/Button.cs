@@ -6,6 +6,7 @@ public class Button : MonoBehaviour
 {
     [Header("Parametrs")]
     [SerializeField] private bool onlyPress;
+    [SerializeField] private float timeToRelease;
 
     [Header("Materials")]
     [SerializeField] private Material onReleasedMaterial;
@@ -20,6 +21,7 @@ public class Button : MonoBehaviour
 
     Vector3 _startPosition;
     bool _imPressed;
+    int _countRelease;
 
     private void Start()
     {
@@ -28,6 +30,7 @@ public class Button : MonoBehaviour
     }
 
     #region Press Release
+    #region Press
     private void Press()
     {
         _imPressed = true;
@@ -36,22 +39,33 @@ public class Button : MonoBehaviour
         
         OnPressed.Invoke();
     }
-
-    private void Release()
-    {
-        _imPressed = false;
-        StartCoroutine(MoveUp());
-        meshRenderer.material = onReleasedMaterial;
-
-        OnReleased.Invoke();
-    }
-
     private IEnumerator MoveDown()
     {
-        while(Vector3.Distance(transform.position, _startPosition) < 0.45f * transform.localScale.y && _imPressed)
+        while (Vector3.Distance(transform.position, _startPosition) < 0.45f * transform.localScale.y)
         {
             transform.position -= transform.up * Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
+        }
+    }
+    #endregion
+
+    #region Release
+    private void Release()
+    {
+        _imPressed = false;
+        _countRelease++;
+        StartCoroutine(WaitRelease(_countRelease));
+    }
+
+    private IEnumerator WaitRelease(int releaseCount)
+    {
+        yield return new WaitForSeconds(timeToRelease);
+        if (!_imPressed && releaseCount == _countRelease)
+        {
+            StartCoroutine(MoveUp());
+            meshRenderer.material = onReleasedMaterial;
+
+            OnReleased.Invoke();
         }
     }
 
@@ -63,6 +77,7 @@ public class Button : MonoBehaviour
             yield return new WaitForSeconds(Time.deltaTime);
         }
     }
+    #endregion
     #endregion
 
     #region OnTrigger

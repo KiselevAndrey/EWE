@@ -2591,6 +2591,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   huntDistance: 0.21
+  imHunting: 0
+  collide: {fileID: 5137298787599882051}
 --- !u!65 &5137298787599882051
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -7,18 +7,18 @@ public class Trap : MonoBehaviour
     public static Action<bool> ImCatch;
 
     [SerializeField] private float huntDistance;
+    [SerializeField] private bool imHunting;
+    [SerializeField] private Collider collide;
 
     private Vector3 _startPosition;
-    bool _imHunting;
 
     private void Start()
     {
-        _startPosition = transform.position;
+        _startPosition = transform.position - (imHunting ? transform.up * huntDistance : Vector3.zero);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        print(other.gameObject.tag);
         if (other.gameObject.CompareTag("Player")) ImCatch(false);
     }
 
@@ -26,13 +26,14 @@ public class Trap : MonoBehaviour
     #region Hunting
     public void Hunting()
     {
-        _imHunting = true;
+        imHunting = true;
+        collide.enabled = true;
         StartCoroutine(MoveUp());
     }
 
     private IEnumerator MoveUp()
     {
-        while (Vector3.Distance(transform.position, _startPosition) < huntDistance && _imHunting)
+        while (Vector3.Distance(transform.position, _startPosition) < huntDistance && imHunting)
         {
             transform.position += transform.up * Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);
@@ -43,13 +44,14 @@ public class Trap : MonoBehaviour
     #region Hide
     public void Hide()
     {
-        _imHunting = false;
+        imHunting = false;
+        collide.enabled = false;
         StartCoroutine(MoveDown());
     }
 
     private IEnumerator MoveDown()
     {
-        while (Vector3.Distance(transform.position, _startPosition) > 0.05f && _imHunting)
+        while (Vector3.Distance(transform.position, _startPosition) > 0.05f && !imHunting)
         {
             transform.position -= transform.up * Time.deltaTime;
             yield return new WaitForSeconds(Time.deltaTime);

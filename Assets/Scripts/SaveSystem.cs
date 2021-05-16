@@ -19,7 +19,7 @@ public class SaveSystem
         stream.Close();
     }
 
-    public static LVLsData LoadLVLSO()
+    public static bool LoadLVLSO(out LVLsData data)
     {
         string path = Application.persistentDataPath + lvlSOPath;
         if (File.Exists(path))
@@ -27,16 +27,17 @@ public class SaveSystem
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);
 
-            LVLsData data = formatter.Deserialize(stream) as LVLsData;
+            data = formatter.Deserialize(stream) as LVLsData;
 
             stream.Close();
 
-            return data;
+            return true;
         }
         else
         {
             Debug.Log("File is not found. Path: " + path);
-            return null;
+            data = null;
+            return false;
         }
     }
     #endregion
@@ -56,6 +57,11 @@ public class LVLsData
     public void LoadData(ref LVLSO lvlSO)
     {
         lvlSO.maxLVL = maxLVL;
+    }
+
+    public void Reset(ref LVLSO lvlSO)
+    {
+        lvlSO.maxLVL = 1;
     }
 }
 #endregion

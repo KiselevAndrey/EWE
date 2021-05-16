@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b550a1bb8141c0f4389390092ee317f1, type: 3}
   m_Name: LVLSO
   m_EditorClassIdentifier: 
-  currentLVL: 3
-  maxLVL: 3
+  currentLVL: 6
+  maxLVL: 5
   LVLObjects:
   - {fileID: 5419016204261112948, guid: 85191a873b6f29848a44c26b2727ab8f, type: 3}
   - {fileID: 623058986433846000, guid: 5d06c87478a7071458a0c5c30c13e251, type: 3}
   - {fileID: 623058986433846000, guid: de09f7094d9b30848a0b074de563aed2, type: 3}
   - {fileID: 623058986433846000, guid: df0c75f3f4aeea54ebb16faf3d03a9f4, type: 3}
+  - {fileID: 5833246187403848440, guid: 773806c4a56ae4649a55e7744c834f2e, type: 3}
+  - {fileID: 2170406212975001908, guid: 87bca06874361af489f17f6670662e16, type: 3}
+  - {fileID: 5406102491546199410, guid: 1297481f8ff6e3b428787cb14d4b424a, type: 3}

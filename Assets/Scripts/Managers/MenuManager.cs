@@ -58,7 +58,10 @@ public class MenuManager : MonoBehaviour
     #region Load
     private void Load()
     {
-        SaveSystem.LoadLVLSO().LoadData(ref lvlSO);
+        if (SaveSystem.LoadLVLSO(out LVLsData data))
+            data.LoadData(ref lvlSO);
+        else
+            data.Reset(ref lvlSO);
     }
     #endregion
 }

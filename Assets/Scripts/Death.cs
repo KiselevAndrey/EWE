@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Death : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> disableList;
+    [SerializeField, Tooltip("Отключение скелета")] private List<GameObject> disableList;
     [SerializeField] private List<GameObject> enableList;
     [SerializeField] private List<Rigidbody> rigidbodies;
     [SerializeField] private List<Transform> bounds;

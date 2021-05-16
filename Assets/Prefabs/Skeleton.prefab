@@ -728,6 +728,8 @@ MonoBehaviour:
   death: {fileID: 3259141497772821371}
   jumpHeight: 2
   graviScale: 1
+  losePosition: {fileID: 0}
+  winPosition: {fileID: 0}
 --- !u!114 &3259141497772821371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1343,9 +1345,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 2
-  m_Color: {r: 0.5283019, g: 0.054497425, b: 0.037379846, a: 0.21568628}
+  m_Color: {r: 0.5283019, g: 0.054497425, b: 0.037379846, a: 1}
   m_Intensity: 10
-  m_Range: 0.05
+  m_Range: 0.1
   m_SpotAngle: 30
   m_InnerSpotAngle: 3
   m_CookieSize: 10
@@ -2235,9 +2237,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 9
   m_Type: 2
-  m_Color: {r: 0.5283019, g: 0.054497425, b: 0.037379846, a: 0.21568628}
+  m_Color: {r: 0.5283019, g: 0.054497425, b: 0.037379846, a: 1}
   m_Intensity: 10
-  m_Range: 0.05
+  m_Range: 0.1
   m_SpotAngle: 30
   m_InnerSpotAngle: 3
   m_CookieSize: 10
@@ -2311,7 +2313,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4126857607363580778}
   m_LocalRotation: {x: -0, y: -0.000000059604645, z: -0.019988, w: 0.9998002}
-  m_LocalPosition: {x: 0.00015773534, y: 0.008938555, z: 0}
+  m_LocalPosition: {x: 0.00016, y: 0.00732, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4126857607358376754}

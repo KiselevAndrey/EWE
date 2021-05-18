@@ -22,16 +22,20 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private MusicStatSO musicStats;
     [SerializeField] private AudioSource audioSource;
 
-    [Header("UI данные")]
+    [Header("UI data")]
     [SerializeField] private Sprite backgroundSprite;
     [SerializeField] private Color backgroundColor;
     [SerializeField] private Font font;
     [SerializeField] private Color textColor;
     [SerializeField] private Color textAlternativeColor;
+
+    [Header("UI elements")]
+    [SerializeField] private GameObject volumeOptions;
     [SerializeField] private Image backgrounfImage;
-    [SerializeField] private List<Text> texts;
-    [SerializeField] private List<Toggle> toggles;
-    [SerializeField] private List<Slider> sliders;
+    [SerializeField] private List<Text> allTexts;
+    [SerializeField] private Slider masterVolSlider;
+    [SerializeField] private Slider musicVolSlider;
+    [SerializeField] private Slider effectsVolSlider;
 
     #region Awake Start
     private void Awake()
@@ -91,44 +95,11 @@ public class MusicManager : MonoBehaviour
     #region Изменение настроек звука
     void LoadMusicOptions()
     {
-        // установка тоглов музыки и эффектов
-        //LoadToUI(masterToggle, musicStats.master, MixerGroup.MasterVolume);
-        //LoadToUI(musicToggle, musicStats.music, MixerGroup.MusicVolume);
-        //LoadToUI(effectsToggle, musicStats.effects, MixerGroup.EffectsVolume);
-
         // установка параметров slider
         LoadToUI(masterVolSlider, musicStats.master.volume, MixerGroup.MasterVolume);
         LoadToUI(musicVolSlider, musicStats.music.volume, MixerGroup.MusicVolume);
         LoadToUI(effectsVolSlider, musicStats.effects.volume, MixerGroup.EffectsVolume);
     }
-
-    #region Toggle
-    /// <summary>
-    /// установка значения на сам UI element и выстановление параметров в mixerGroup
-    /// </summary>
-    void LoadToUI(Toggle toggle, MusicOptionSO musicOption, string mixerGroup)
-    {
-        toggle.isOn = musicOption.play;    // кнопка самого toggle
-        SetFloatMixer(mixerGroup, musicOption, musicOption.play);
-    }
-
-    /// <summary>
-    /// Сохраниение нового значения и установка его в mixerGroup
-    /// </summary>
-    void NewValue(string mixerGroup, MusicOptionSO musicOption, bool newValue)
-    {
-        musicOption.play = newValue;
-        SetFloatMixer(mixerGroup, musicOption, newValue);
-    }
-
-    /// <summary>
-    /// Вкл/выкл звука нужного mixerGroup
-    /// </summary>
-    void SetFloatMixer(string mixerGroup, MusicOptionSO musicOption, bool value)
-    {
-        mixer.audioMixer.SetFloat(mixerGroup, value ? SaveFloatToVolume(musicOption.volume) : -80);
-    }
-    #endregion
 
     #region Sliders
     /// <summary>
@@ -158,10 +129,6 @@ public class MusicManager : MonoBehaviour
     #endregion
 
     #region UIActions
-    public void SwitchMaster(bool value) => NewValue(MixerGroup.MasterVolume, musicStats.master, value);
-    public void SwitchMusic(bool value) => NewValue(MixerGroup.MusicVolume, musicStats.music, value);
-    public void SwitchEffects(bool value) => NewValue(MixerGroup.EffectsVolume, musicStats.effects, value);
-
     public void VolumeMaster(float value) => NewValue(MixerGroup.MasterVolume, ref musicStats.master.volume, value);
     public void VolumeMusic(float value) => NewValue(MixerGroup.MusicVolume, ref musicStats.music.volume, value);
     public void VolumeEffects(float value) => NewValue(MixerGroup.EffectsVolume, ref musicStats.effects.volume, value);

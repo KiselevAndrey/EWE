@@ -52,8 +52,9 @@ MonoBehaviour:
   movingRightDistance: 10
   movingTime: 10
   changeDirectionTime: 20
-  canBlink: 1
+  canBlink: 0
   blinkIsStart: 1
+  blinkOfTouch: 0
   visibleTime: 5
   invisibleTime: 1
   meshRenderer: {fileID: 8430946521570716030}

@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Platforms : MonoBehaviour
 {
     [SerializeField] List<Platform> platforms;
-
 
     public void Activate()
     {

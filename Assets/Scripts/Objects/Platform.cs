@@ -5,10 +5,6 @@ using DG.Tweening;
 
 public class Platform : MonoBehaviour
 {
-	private enum Type { Moving, Blinking, Falling }
-	
-
-
 	[Header("Moving")]
 	[SerializeField] private bool canMove;
 	[SerializeField, ConditionalHide(nameof(canMove))] private bool moveIsStart;
@@ -48,9 +44,9 @@ public class Platform : MonoBehaviour
 	private void SetTriggerSize()
     {
 		Vector3 newSize = transform.localScale;
-		newSize.x = (newSize.x + 1.5f) / newSize.x;
-		newSize.y = (newSize.y + 1.5f) / newSize.y;
-		newSize.z = (newSize.z + 1.5f) / newSize.z;
+		newSize.x = (newSize.x + 1f) / newSize.x;
+		newSize.y = (newSize.y + 1f) / newSize.y;
+		newSize.z = (newSize.z + 1f) / newSize.z;
 
 		triggerCollider.size = newSize;
     }
@@ -72,8 +68,12 @@ public class Platform : MonoBehaviour
 
 	private IEnumerator ChangeDirection(bool moveUp)
 	{
-		yield return new WaitForSeconds(changeDirectionTime);
-		Move(!moveUp);
+		if (changeDirectionTime < 0) yield return null;
+		else
+		{
+			yield return new WaitForSeconds(changeDirectionTime);
+			Move(!moveUp);
+		}
 	}
 
 	private void AddToMovingList(Transform transform)

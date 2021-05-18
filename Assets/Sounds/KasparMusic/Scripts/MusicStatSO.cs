@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public enum MusicType { Master, Music, Effects }
 
@@ -8,4 +9,6 @@ public class MusicStatSO : ScriptableObject
     public MusicOptionSO master;
     public MusicOptionSO music;
     public MusicOptionSO effects;
+
+    public List<MusicOptionSO> musicOptions;
 }

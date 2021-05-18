@@ -1,37 +1,44 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class MusicManager : MonoBehaviour
 {
-    [Header("Музыка")]
-    [SerializeField] ClipListSO clipList;
-    [SerializeField, Range(0f, 1f)] float normalVolume;
+    static public MusicManager singleton;
 
-    [Header("UI elements")]
-    //[SerializeField] Toggle masterToggle;
-    //[SerializeField] Toggle musicToggle;
-    //[SerializeField] Toggle effectsToggle;
-    [SerializeField] Slider masterVolSlider;
-    [SerializeField] Slider musicVolSlider;
-    [SerializeField] Slider effectsVolSlider;
+    [Header("Музыка")]
+    [SerializeField] private ClipListSO clipList;
+    [SerializeField, Range(0f, 1f)] private float normalVolume;
 
     [Header("Snapshots")]
-    [SerializeField] AudioMixerSnapshot normal;
-    [SerializeField] AudioMixerSnapshot pause;
-    [SerializeField] AudioMixerSnapshot menu;
+    [SerializeField] private AudioMixerSnapshot normal;
+    [SerializeField] private AudioMixerSnapshot pause;
+    [SerializeField] private AudioMixerSnapshot menu;
 
     [Header("Данные доп")]
-    [SerializeField] AudioMixerGroup mixer;
-    [SerializeField] MusicStatSO musicStats;
-    [SerializeField] AudioSource audioSource;
+    [SerializeField] private AudioMixerGroup mixer;
+    [SerializeField] private MusicStatSO musicStats;
+    [SerializeField] private AudioSource audioSource;
+
+    [Header("UI данные")]
+    [SerializeField] private Sprite backgroundSprite;
+    [SerializeField] private Color backgroundColor;
+    [SerializeField] private Font font;
+    [SerializeField] private Color textColor;
+    [SerializeField] private Color textAlternativeColor;
+    [SerializeField] private Image backgrounfImage;
+    [SerializeField] private List<Text> texts;
+    [SerializeField] private List<Toggle> toggles;
+    [SerializeField] private List<Slider> sliders;
 
     #region Awake Start
     private void Awake()
     {
         ToSnapshot(normal, 1f);
         Singleton();
+        singleton = this;
     }
 
     void Singleton()

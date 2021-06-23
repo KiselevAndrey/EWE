@@ -31,11 +31,13 @@ public class MusicManager : MonoBehaviour
 
     [Header("UI elements")]
     [SerializeField] private GameObject volumeOptions;
-    [SerializeField] private Image backgrounfImage;
+    [SerializeField] private Image backgroundImage;
     [SerializeField] private List<Text> allTexts;
     [SerializeField] private Slider masterVolSlider;
     [SerializeField] private Slider musicVolSlider;
     [SerializeField] private Slider effectsVolSlider;
+    [SerializeField] private List<Image> slidersBackground;
+    [SerializeField] private List<Image> slidersFillArea;
 
     #region Awake Start
     private void Awake()
@@ -67,6 +69,28 @@ public class MusicManager : MonoBehaviour
 
         clipList.Shuffle();
         NextMusic();
+
+        SetUIOptions();
+    }
+
+    private void SetUIOptions()
+    {
+        volumeOptions.SetActive(false);
+
+        for (int i = 0; i < allTexts.Count; i++)
+        {
+            allTexts[i].color = textColor;
+            allTexts[i].font = font;
+        }
+
+        backgroundImage.sprite = backgroundSprite;
+        backgroundImage.color = backgroundColor;
+
+        for (int i = 0; i < slidersBackground.Count; i++)
+        {
+            slidersBackground[i].color = textAlternativeColor;
+            slidersFillArea[i].color = textColor;
+        }
     }
     #endregion
 

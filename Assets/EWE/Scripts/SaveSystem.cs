@@ -22,6 +22,7 @@ public class SaveSystem
     public static bool LoadLVLSO(out LVLsData data)
     {
         string path = Application.persistentDataPath + lvlSOPath;
+        Debug.Log(path);
         if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -36,7 +37,7 @@ public class SaveSystem
         else
         {
             Debug.Log("File is not found. Path: " + path);
-            data = null;
+            data = new LVLsData(new LVLSO());
             return false;
         }
     }
